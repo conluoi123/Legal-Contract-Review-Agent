@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interview Guide — Legal Contract Review Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f12;
+    --bg2: #13161b;
+    --bg3: #1a1e25;
+    --border: #252930;
+    --border2: #2e333d;
+    --accent: #4ade80;
+    --accent2: #22c55e;
+    --accent-dim: rgba(74,222,128,0.08);
+    --accent-glow: rgba(74,222,128,0.15);
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --red: #f87171;
+    --amber: #fbbf24;
+    --blue: #60a5fa;
+    --purple: #a78bfa;
+    --teal: #2dd4bf;
+    --mono: 'IBM Plex Mono', monospace;
+    --serif: 'Fraunces', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  .site-header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,15,18,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 2rem;
+    height: 52px;
+  }
+  .logo {
+    font-family: var(--mono);
+    font-size: 12px; color: var(--accent);
+    letter-spacing: 0.1em; white-space: nowrap;
+  }
+  .nav-pills { display: flex; gap: 4px; overflow-x: auto; flex: 1; }
+  .nav-pill {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text3); padding: 4px 10px;
+    border-radius: 4px; cursor: pointer;
+    white-space: nowrap; border: none;
+    background: transparent; transition: all 0.15s;
+  }
+  .nav-pill:hover { color: var(--text); background: var(--bg3); }
+  .nav-pill.active { color: var(--accent); background: var(--accent-dim); }
+  .counter {
+    font-family: var(--mono); font-size: 11px; color: var(--text3);
+    white-space: nowrap;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 4rem 2rem 3rem;
+    max-width: 900px; margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--accent); background: var(--accent-dim);
+    border: 1px solid rgba(74,222,128,0.2);
+    padding: 4px 10px; border-radius: 4px; margin-bottom: 1.5rem;
+  }
+  .hero-tag::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero h1 {
+    font-family: var(--serif); font-size: clamp(28px,4vw,42px);
+    font-weight: 300; line-height: 1.2;
+    color: var(--text); margin-bottom: 1rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero p { color: var(--text2); max-width: 600px; font-size: 15px; }
+  .stat-row {
+    display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;
+  }
+  .stat { }
+  .stat-num {
+    font-family: var(--mono); font-size: 22px; font-weight: 500;
+    color: var(--accent);
+  }
+  .stat-label { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+  /* MAIN LAYOUT */
+  .main { max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+  /* CATEGORY */
+  .category {
+    margin-top: 3rem;
+    scroll-margin-top: 60px;
+  }
+  .category-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+    margin-bottom: 0.5rem;
+  }
+  .cat-icon {
+    width: 28px; height: 28px;
+    border-radius: 6px; display: flex; align-items: center;
+    justify-content: center; font-size: 13px;
+    flex-shrink: 0;
+  }
+  .cat-title {
+    font-family: var(--mono); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.08em; color: var(--text2);
+    text-transform: uppercase;
+  }
+  .cat-count {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text3); margin-left: auto;
+  }
+
+  /* QUESTION CARD */
+  .q-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-top: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .q-card:hover { border-color: var(--border2); }
+  .q-card.open { border-color: var(--border2); }
+
+  .q-header {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 16px; cursor: pointer;
+    background: var(--bg2);
+    transition: background 0.15s;
+  }
+  .q-header:hover { background: var(--bg3); }
+  .q-num {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--text3); margin-top: 3px;
+    flex-shrink: 0; width: 28px;
+  }
+  .q-text { flex: 1; font-size: 14px; font-weight: 400; color: var(--text); }
+  .q-badges { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+  .badge {
+    font-family: var(--mono); font-size: 10px;
+    padding: 2px 7px; border-radius: 3px;
+  }
+  .badge-hard { background: rgba(248,113,113,0.1); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
+  .badge-med { background: rgba(251,191,36,0.1); color: var(--amber); border: 1px solid rgba(251,191,36,0.2); }
+  .badge-easy { background: rgba(74,222,128,0.1); color: var(--accent); border: 1px solid rgba(74,222,128,0.2); }
+  .badge-freq {
+    font-size: 9px; color: var(--text3);
+    border: 1px solid var(--border2); padding: 2px 6px; border-radius: 3px;
+  }
+  .q-chevron {
+    color: var(--text3); font-size: 12px; flex-shrink: 0;
+    transition: transform 0.2s; margin-top: 4px;
+  }
+  .q-card.open .q-chevron { transform: rotate(180deg); }
+
+  .q-body {
+    display: none;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .q-card.open .q-body { display: block; }
+
+  .q-section {
+    padding: 16px 16px 0;
+  }
+  .q-section:last-child { padding-bottom: 20px; }
+
+  .section-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    color: var(--text3); text-transform: uppercase; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  .answer-text {
+    font-size: 14px; color: var(--text2); line-height: 1.75;
+    padding: 10px 14px;
+    background: var(--bg2); border-radius: 6px;
+    border-left: 2px solid var(--accent);
+  }
+  .answer-text strong { color: var(--text); font-weight: 500; }
+  .answer-text em { color: var(--accent); font-style: normal; }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px; overflow-x: auto;
+    margin: 8px 0;
+  }
+  .code-header {
+    padding: 6px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .code-lang {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--accent); letter-spacing: 0.05em;
+  }
+  .code-copy {
+    font-family: var(--mono); font-size: 10px; color: var(--text3);
+    cursor: pointer; border: none; background: none;
+    transition: color 0.15s;
+  }
+  .code-copy:hover { color: var(--text); }
+  pre {
+    font-family: var(--mono); font-size: 12.5px;
+    line-height: 1.6; padding: 14px 16px;
+    color: var(--text);
+    white-space: pre; overflow-x: auto;
+    tab-size: 2;
+  }
+  .kw { color: var(--purple); }
+  .fn { color: var(--blue); }
+  .str { color: var(--accent); }
+  .cm { color: var(--text3); }
+  .cls { color: var(--amber); }
+  .num { color: var(--teal); }
+
+  /* COMPARISON TABLE */
+  .compare-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px; margin: 8px 0;
+  }
+  .compare-table th {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em;
+    color: var(--text3); text-transform: uppercase;
+    padding: 8px 12px; border-bottom: 1px solid var(--border);
+    text-align: left; background: var(--bg2);
+  }
+  .compare-table td {
+    padding: 8px 12px; border-bottom: 1px solid var(--border);
+    color: var(--text2); vertical-align: top;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: var(--bg2); }
+  .tick { color: var(--accent); }
+  .cross { color: var(--red); }
+
+  /* PITFALL BOX */
+  .pitfall {
+    background: rgba(248,113,113,0.06);
+    border: 1px solid rgba(248,113,113,0.2);
+    border-radius: 6px; padding: 12px 14px;
+    margin: 8px 0;
+  }
+  .pitfall-title {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.05em;
+    color: var(--red); text-transform: uppercase; margin-bottom: 6px;
+  }
+  .pitfall p { font-size: 13px; color: var(--text2); }
+
+  /* KEY POINT */
+  .keypoint {
+    background: var(--accent-dim);
+    border: 1px solid rgba(74,222,128,0.2);
+    border-radius: 6px; padding: 12px 14px; margin: 8px 0;
+  }
+  .keypoint p { font-size: 13px; color: var(--text2); }
+  .keypoint strong { color: var(--accent); }
+
+  /* STAR FORMAT */
+  .star-grid {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 0; border: 1px solid var(--border); border-radius: 6px;
+    overflow: hidden; margin: 8px 0;
+  }
+  .star-row { display: contents; }
+  .star-label {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--accent); padding: 10px 12px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    display: flex; align-items: flex-start;
+    letter-spacing: 0.05em;
+  }
+  .star-content {
+    font-size: 13px; color: var(--text2); padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .star-row:last-child .star-label,
+  .star-row:last-child .star-content { border-bottom: none; }
+
+  /* METRICS */
+  .metrics-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+    gap: 8px; margin: 8px 0;
+  }
+  .metric-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 10px 12px;
+  }
+  .metric-val {
+    font-family: var(--mono); font-size: 18px;
+    font-weight: 500; color: var(--accent);
+  }
+  .metric-label { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  /* FLOW */
+  .flow {
+    display: flex; flex-direction: column; gap: 0;
+    margin: 8px 0;
+  }
+  .flow-step {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--accent); width: 20px; flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .flow-content { }
+  .flow-title { font-size: 13px; font-weight: 500; color: var(--text); }
+  .flow-desc { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+  /* SEARCH */
+  .search-wrap {
+    position: sticky; top: 52px; z-index: 99;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 2rem;
+    max-width: 900px; margin: 0 auto;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    .hero { padding: 2rem 1rem; }
+    .main { padding: 0 1rem 3rem; }
+    .nav-pills { display: none; }
+    .star-grid { grid-template-columns: 70px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">⚖ CONTRACT-AGENT</div>
+  <nav class="nav-pills" id="nav">
+    <button class="nav-pill active" onclick="scrollTo('cat-architecture')">Architecture</button>
+    <button class="nav-pill" onclick="scrollTo('cat-langgraph')">LangGraph</button>
+    <button class="nav-pill" onclick="scrollTo('cat-nlp')">NLP & Chunking</button>
+    <button class="nav-pill" onclick="scrollTo('cat-vector')">Vector DB</button>
+    <button class="nav-pill" onclick="scrollTo('cat-testing')">Testing & Eval</button>
+    <button class="nav-pill" onclick="scrollTo('cat-system')">System Design</button>
+    <button class="nav-pill" onclick="scrollTo('cat-behavioral')">Behavioral</button>
+  </nav>
+  <span class="counter" id="counter">0 / 35</span>
+</header>
+
+<section class="hero">
+  <div class="hero-tag">Interview Prep · Senior Level</div>
+  <h1>Legal Contract Review Agent<br><em>Interview Question Bank</em></h1>
+  <p>Tổng hợp câu hỏi chuyên sâu từ góc nhìn Senior Engineer — mỗi câu có đáp án chi tiết, code ví dụ, và điểm cần tránh.</p>
+  <div class="stat-row">
+    <div class="stat"><div class="stat-num">35</div><div class="stat-label">Câu hỏi</div></div>
+    <div class="stat"><div class="stat-num">7</div><div class="stat-label">Chủ đề</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Code examples</div></div>
+    <div class="stat"><div class="stat-num">~3h</div><div class="stat-label">Thời gian đọc</div></div>
+  </div>
+</section>
+
+<div class="main" id="main">
+
+<!-- ═══════════════════════════════════════════ ARCHITECTURE ══ -->
+<div class="category" id="cat-architecture">
+  <div class="category-header">
+    <div class="cat-icon" style="background:rgba(74,222,128,0.1)">🏗</div>
+    <span class="cat-title">Architecture & Design</span>
+    <span class="cat-count">6 câu</span>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-card" id="q1">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q01</span>
+      <span class="q-text">Tại sao chọn LangGraph thay vì LangChain LCEL hay viết loop tay? Trade-off là gì?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★★</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Core Answer</div>
+        <div class="answer-text">
+          LangGraph được chọn vì 3 tính năng không có trong alternatives: <em>native interrupt()</em>, <em>stateful checkpointing</em>, và <em>cyclical graph support</em>.<br><br>
+          <strong>LangChain LCEL</strong>: pipeline tuyến tính (A→B→C), không có cơ chế dừng giữa chừng để hỏi user. Muốn làm HITL phải tự implement message queue + callback, phức tạp và error-prone.<br><br>
+          <strong>Custom loop</strong>: linh hoạt nhất nhưng tự chịu trách nhiệm state management, retry logic, và persistence. Mỗi lần server crash là mất state. Với contract review — process 20-30 giây — crash recovery là yêu cầu thực tế.<br><br>
+          <strong>LangGraph</strong>: graph state persist tự động vào PostgreSQL sau mỗi node. Khi interrupt(), state được serialize. POST /answer resume đúng từ điểm dừng. Không cần viết thêm infrastructure.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Trade-offs</div>
+        <table class="compare-table">
+          <tr><th>Tiêu chí</th><th>LangGraph</th><th>Custom Loop</th><th>LCEL</th></tr>
+          <tr><td>HITL (interrupt/resume)</td><td class="tick">✓ Native</td><td>Manual impl</td><td class="cross">✗ Không có</td></tr>
+          <tr><td>State persistence</td><td class="tick">✓ PostgreSQL</td><td>Tự xây</td><td class="cross">✗ Không có</td></tr>
+          <tr><td>Visibility / debug</td><td class="tick">✓ Graph viz</td><td>Khó debug</td><td>Partial</td></tr>
+          <tr><td>Learning curve</td><td>Medium</td><td>Low</td><td class="tick">✓ Low</td></tr>
+          <tr><td>Overhead</td><td>~15% overhead</td><td class="tick">✓ 0</td><td>Minimal</td></tr>
+        </table>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Điểm quan trọng cần nêu</div>
+        <div class="keypoint"><p><strong>Key insight:</strong> Câu hỏi thực sự là "bạn có hiểu khi nào KHÔNG cần LangGraph không?" — với task đơn giản không cần HITL, LCEL hoặc loop thường đủ và ít overhead hơn. LangGraph worth it khi có stateful, multi-step workflow với human intervention.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="q2">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q02</span>
+      <span class="q-text">Mô tả AgentState design. Tại sao dùng dataclass thay vì TypedDict hay Pydantic BaseModel?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★★☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Phân tích 3 options</div>
+        <table class="compare-table">
+          <tr><th>Option</th><th>Ưu điểm</th><th>Nhược điểm với use case này</th></tr>
+          <tr><td><code>TypedDict</code></td><td>Nhẹ, dict-like</td><td>Không có default_factory → mutable default bug với list; không có methods như missing_critical_fields</td></tr>
+          <tr><td><code>Pydantic BaseModel</code></td><td>Validation mạnh, JSON schema</td><td>Immutable by default → awkward khi mutate trong nodes; overhead khi serialize/deserialize nhiều lần</td></tr>
+          <tr><td><code>@dataclass</code></td><td>field(default_factory=list); có methods; mutable; lightweight</td><td>Cần manual __post_init__ nếu cần validation</td></tr>
+        </table>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Code Example</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">python</span></div>
+          <pre><span class="kw">from</span> dataclasses <span class="kw">import</span> dataclass, field
+
+<span class="cm"># ✓ ĐÚNG — dataclass với default_factory</span>
+<span class="kw">@dataclass</span>
+<span class="kw">class</span> <span class="cls">AgentState</span>:
+    contract_id: str
+    clauses: <span class="cls">List</span>[<span class="cls">Clause</span>] = field(default_factory=list)
+    risks: <span class="cls">List</span>[<span class="cls">RiskItem</span>] = field(default_factory=list)
+    errors: <span class="cls">List</span>[str] = field(default_factory=list)
+
+<span class="cm"># ✗ SAI — mutable default bug</span>
+<span class="kw">class</span> <span class="cls">AgentStateBad</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self):
+        self.clauses = []  <span class="cm"># Shared across instances!</span></pre>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Pitfall cần tránh</div>
+        <div class="pitfall">
+          <div class="pitfall-title">⚠ Common Mistake</div>
+          <p>Nếu dùng <code>class Foo: clauses = []</code> (class attribute), mọi instance share cùng list. Bug cực kỳ khó debug khi chạy concurrent requests — risk list của contract A lẫn vào contract B.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="q3">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q03</span>
+      <span class="q-text">Nếu server crash khi agent đang chạy giữa chừng, điều gì xảy ra? Recover như thế nào?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★★</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Core Answer</div>
+        <div class="answer-text">
+          LangGraph Checkpointer lưu state sau <em>mỗi node hoàn thành</em> vào PostgreSQL. Khi server crash và restart, ta gọi <code>graph.invoke(None, config={"thread_id": contract_id})</code> — LangGraph tự load state từ checkpoint gần nhất và resume từ node tiếp theo.<br><br>
+          <strong>Điều quan trọng:</strong> Nodes phải <em>idempotent</em> — chạy lại không gây side effect. Ví dụ: <code>compare_template_node</code> phải upsert vào Qdrant, không insert duplicate. Nếu <code>detect_risks_node</code> chạy 15/30 clauses thì crash, khi resume cần skip 15 clauses đã xử lý.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Idempotency trong Risk Detection</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">python</span></div>
+          <pre><span class="kw">def</span> <span class="fn">detect_risks_node</span>(state: <span class="cls">AgentState</span>) -> <span class="cls">AgentState</span>:
+    <span class="cm"># Track processed clause IDs trong state</span>
+    processed_ids = {r.clause_id <span class="kw">for</span> r <span class="kw">in</span> state.risks}
+
+    <span class="kw">for</span> clause <span class="kw">in</span> state.clauses:
+        <span class="kw">if</span> clause.id <span class="kw">in</span> processed_ids:
+            <span class="kw">continue</span>  <span class="cm"># Skip đã xử lý → idempotent</span>
+        risk = detect_risk(clause)
+        state.risks.append(risk)
+
+    <span class="kw">return</span> state</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="q4">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q04</span>
+      <span class="q-text">Thiết kế API polling vs WebSocket để theo dõi trạng thái agent. Khi nào dùng cái nào?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Phân tích</div>
+        <div class="answer-text">
+          <strong>Polling (dùng cho MVP):</strong> GET /status mỗi 2–3 giây. Đơn giản, stateless, dễ implement. Nhược điểm: server nhận nhiều request dù state không đổi, latency cao hơn ~3s.<br><br>
+          <strong>WebSocket:</strong> Server push event ngay khi state thay đổi. Latency gần 0, ít request hơn. Nhược điểm: cần manage connection state, reconnect logic, không work tốt với load balancer (cần sticky sessions hoặc Redis pub/sub).<br><br>
+          <strong>Server-Sent Events (SSE):</strong> Middle ground — server push, nhưng one-directional, simpler hơn WebSocket. Tốt cho "progress stream". FastAPI hỗ trợ native với <code>StreamingResponse</code>.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Decision</div>
+        <div class="keypoint"><p><strong>MVP:</strong> Polling là đủ — process time 15–30s, poll mỗi 2s = 15 requests max. Cost thấp.<br><strong>Production:</strong> SSE để stream progress events real-time — user thấy "Đang phân tích điều khoản 12/30" thay vì loading spinner.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="q5">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q05</span>
+      <span class="q-text">Làm thế nào để handle concurrent requests — nhiều user upload cùng lúc mà không ảnh hưởng nhau?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">3 lớp isolation</div>
+        <div class="flow">
+          <div class="flow-step">
+            <span class="flow-num">01</span>
+            <div class="flow-content">
+              <div class="flow-title">Thread isolation via LangGraph thread_id</div>
+              <div class="flow-desc">Mỗi contract có <code>thread_id = contract_id</code>. LangGraph checkpointer isolate state theo thread — không bao giờ cross-contaminate. Giống primary key trong database.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">02</span>
+            <div class="flow-content">
+              <div class="flow-title">Async background tasks (FastAPI BackgroundTasks)</div>
+              <div class="flow-desc">Upload trả về ngay 202 Accepted, agent chạy async trong background. Không block HTTP thread. Với asyncio, 1 worker có thể handle nhiều concurrent agents vì I/O-bound (LLM API calls await-able).</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">03</span>
+            <div class="flow-content">
+              <div class="flow-title">Qdrant payload filtering theo contract_id</div>
+              <div class="flow-desc">Mỗi clause embedding được store với <code>payload.contract_id</code>. Query luôn filter theo contract_id — không bao giờ lấy nhầm embedding của contract khác.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="q6">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q06</span>
+      <span class="q-text">Nếu LLM API timeout hoặc trả lỗi 500, agent xử lý như thế nào? Không được mất kết quả đã có.</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Strategy: Fail-forward, không Fail-stop</div>
+        <div class="answer-text">
+          Nguyên tắc: <em>lỗi ở 1 clause không được crash toàn bộ pipeline</em>. Dùng try/catch ở node level, ghi lỗi vào <code>state.errors</code>, tiếp tục với clauses còn lại. Report cuối vẫn có giá trị với 29/30 clauses được phân tích.<br><br>
+          <strong>Retry strategy:</strong> Dùng <code>tenacity</code> với exponential backoff (2s, 4s, 8s). Sau 3 lần fail, skip clause đó và log. Không retry vô hạn — tránh làm chậm toàn bộ pipeline.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Code</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">python</span></div>
+          <pre><span class="kw">from</span> tenacity <span class="kw">import</span> retry, stop_after_attempt, wait_exponential
+
+<span class="kw">@retry</span>(
+    stop=stop_after_attempt(<span class="num">3</span>),
+    wait=wait_exponential(multiplier=<span class="num">1</span>, min=<span class="num">2</span>, max=<span class="num">10</span>)
+)
+<span class="kw">async def</span> <span class="fn">call_llm_safe</span>(prompt: str) -> str:
+    <span class="kw">return await</span> llm_client.complete(prompt)
+
+<span class="kw">async def</span> <span class="fn">detect_risks_node</span>(state):
+    <span class="kw">for</span> clause <span class="kw">in</span> state.clauses:
+        <span class="kw">try</span>:
+            risk = <span class="kw">await</span> <span class="fn">call_llm_safe</span>(build_prompt(clause))
+            state.risks.append(risk)
+        <span class="kw">except</span> <span class="cls">Exception</span> <span class="kw">as</span> e:
+            <span class="cm"># Không crash — ghi lỗi, continue</span>
+            state.errors.append(f<span class="str">"Risk detection failed: {clause.id}: {e}"</span>)
+    <span class="kw">return</span> state</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ LANGGRAPH ══ -->
+<div class="category" id="cat-langgraph">
+  <div class="category-header">
+    <div class="cat-icon" style="background:rgba(167,139,250,0.1)">🤖</div>
+    <span class="cat-title">LangGraph & Human-in-the-Loop</span>
+    <span class="cat-count">5 câu</span>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="q7">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q07</span>
+      <span class="q-text">Giải thích cơ chế interrupt() trong LangGraph. Khi nào thì dùng interrupt_before vs interrupt_after?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★★</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Cơ chế hoạt động</div>
+        <div class="answer-text">
+          <code>interrupt()</code> là một special exception trong LangGraph. Khi node gọi <code>interrupt(payload)</code>, LangGraph:<br>
+          1. Serialize toàn bộ state vào checkpointer (PostgreSQL)<br>
+          2. Lưu <code>payload</code> vào pending interrupts<br>
+          3. Return ngay lập tức — graph "suspended"<br>
+          4. Khi user gọi <code>graph.invoke(Command(resume=answer), config)</code>, graph load state từ checkpoint và tiếp tục từ đúng điểm đó, với <code>interrupt()</code> trả về <code>answer</code>.<br><br>
+          <strong>interrupt_before vs interrupt_after:</strong><br>
+          — <code>interrupt_before=["node_x"]</code>: dừng TRƯỚC khi chạy node_x. Dùng khi cần user approve trước khi node thực hiện side effect (gửi email, ghi DB).<br>
+          — <code>interrupt()</code> trong node body: dừng TRONG node, linh hoạt hơn vì có thể conditional (chỉ interrupt khi thiếu data).
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Trong dự án này</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">python</span></div>
+          <pre><span class="cm"># Dùng interrupt() trong node body (conditional)</span>
+<span class="kw">def</span> <span class="fn">check_missing_entities_node</span>(state):
+    missing = state.metadata.missing_critical_fields
+    <span class="kw">if not</span> missing:
+        <span class="kw">return</span> state  <span class="cm"># No interrupt — continue pipeline</span>
+
+    <span class="cm"># Chỉ interrupt khi thực sự cần</span>
+    answer = interrupt({
+        <span class="str">"type"</span>: <span class="str">"missing_metadata"</span>,
+        <span class="str">"questions"</span>: [{<span class="str">"field"</span>: f, <span class="str">"message"</span>: QUESTIONS[f]} <span class="kw">for</span> f <span class="kw">in</span> missing]
+    })
+    <span class="cm"># Resume: answer là dict user đã trả lời</span>
+    state.metadata.update(answer)
+    <span class="kw">return</span> state</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="q8">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q08</span>
+      <span class="q-text">Làm thế nào để thiết kế câu hỏi HITL "thông minh" — không hỏi thừa, không hỏi thiếu?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★★☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">3 nguyên tắc thiết kế HITL UX</div>
+        <div class="flow">
+          <div class="flow-step">
+            <span class="flow-num">01</span>
+            <div class="flow-content">
+              <div class="flow-title">Chỉ hỏi khi thực sự cần</div>
+              <div class="flow-desc">Chỉ interrupt khi thiếu critical field (party_a, party_b, effective_date) hoặc risk item có confidence < 0.7. Đừng hỏi optional fields (governing_law) — gây friction không cần thiết.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">02</span>
+            <div class="flow-content">
+              <div class="flow-title">Gợi ý thông minh dựa trên context</div>
+              <div class="flow-desc">Nếu thiếu effective_date, gợi ý "Hôm nay (04/06/2026)?" thay vì blank input. Nếu thiếu governing_law, gợi ý "Việt Nam" (vì hợp đồng tiếng Việt). Giảm 80% user effort.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">03</span>
+            <div class="flow-content">
+              <div class="flow-title">Batch câu hỏi</div>
+              <div class="flow-desc">Nếu thiếu 3 fields, hỏi cả 3 trong 1 lần interrupt. Đừng interrupt 3 lần riêng biệt — làm phiền user và làm pipeline chậm 3× so với cần thiết.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="q-card" id="q9">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q09</span>
+      <span class="q-text">Graph state được serialize thế nào để store vào PostgreSQL? Có vấn đề gì với objects không serializable?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Cơ chế</div>
+        <div class="answer-text">
+          LangGraph Checkpointer serialize state thành JSON via <code>msgpack</code> hoặc custom serializer. Vấn đề: <code>List[float]</code> (embeddings 1536 dims × 30 clauses) = ~180KB per checkpoint. Quá nặng.<br><br>
+          <strong>Giải pháp:</strong> Không lưu embeddings trong AgentState. Embeddings được lưu riêng trong Qdrant, query lại khi cần. State chỉ lưu <code>clause_id</code> references.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Design Rule</div>
+        <div class="keypoint"><p><strong>Rule:</strong> AgentState chỉ lưu <em>references</em> (IDs) và <em>metadata nhỏ</em>. Large data (embeddings, raw text, files) sống ở external storage (Qdrant, S3). State = pointers, không phải data.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="q-card" id="q10">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q10</span>
+      <span class="q-text">Nếu user không trả lời câu hỏi HITL trong 24 giờ, agent xử lý thế nào?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Timeout Strategy</div>
+        <div class="answer-text">
+          Cần scheduled job kiểm tra contracts ở trạng thái AWAITING_INPUT quá 24h. Có 3 options:<br><br>
+          <strong>Option A — Auto-proceed với giá trị mặc định:</strong> effective_date = today, governing_law = "Việt Nam". Ghi chú trong report: "Thông tin này được điền tự động do user không phản hồi."<br><br>
+          <strong>Option B — Mark EXPIRED, notify user:</strong> Gửi email/notification, user phải restart process. Clean nhưng friction cao.<br><br>
+          <strong>Option C — Partial report:</strong> Generate report với những gì đã có, đánh dấu rõ fields bị thiếu. Hữu ích nhất cho user.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Implementation</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">python</span></div>
+          <pre><span class="cm"># Scheduler chạy mỗi giờ (APScheduler hoặc Celery Beat)</span>
+<span class="kw">async def</span> <span class="fn">check_stale_contracts</span>():
+    stale = <span class="kw">await</span> db.fetch(
+        <span class="str">"""SELECT id FROM contracts
+           WHERE status = 'AWAITING_INPUT'
+           AND updated_at < NOW() - INTERVAL '24 hours'"""</span>
+    )
+    <span class="kw">for</span> contract <span class="kw">in</span> stale:
+        <span class="cm"># Auto-proceed với default values</span>
+        <span class="kw">await</span> resume_with_defaults(contract[<span class="str">"id"</span>])</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="q-card" id="q11">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q11</span>
+      <span class="q-text">Tại sao không dùng Celery/RabbitMQ thay vì FastAPI BackgroundTasks? Giới hạn của cách hiện tại?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Honest trade-off</div>
+        <div class="answer-text">
+          <strong>BackgroundTasks (hiện tại):</strong> Task chạy trong cùng process với web server. Nếu server restart (deploy mới), task đang chạy bị kill. Không có retry tự động, không có visibility vào queue depth, không scale ra multiple workers.<br><br>
+          <strong>Celery + RabbitMQ (production):</strong> Task persist trong queue dù server restart. Multiple workers. Retry tự động. Flower dashboard để monitor. Nhưng: thêm 2 infrastructure components (Celery worker + message broker), phức tạp hơn cho MVP.<br><br>
+          <strong>Justification cho MVP:</strong> Contract review process là 15–30s. Khả năng server restart đúng trong window đó rất thấp. LangGraph checkpointer đã handle crash recovery. BackgroundTasks đủ tốt cho single-server MVP.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Key Message</div>
+        <div class="keypoint"><p><strong>Điểm cộng khi phỏng vấn:</strong> Biết giới hạn của lựa chọn mình đưa ra và biết khi nào cần upgrade. "BackgroundTasks cho MVP, Celery khi scale to multiple workers" thể hiện engineering judgment.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ NLP & CHUNKING ══ -->
+<div class="category" id="cat-nlp">
+  <div class="category-header">
+    <div class="cat-icon" style="background:rgba(251,191,36,0.1)">📄</div>
+    <span class="cat-title">NLP, Chunking & Prompt Engineering</span>
+    <span class="cat-count">7 câu</span>
+  </div>
+
+  <!-- Q12 -->
+  <div class="q-card" id="q12">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q12</span>
+      <span class="q-text">Tại sao Hierarchical Chunking tốt hơn fixed-size chunking cho legal documents?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★★</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Vấn đề của fixed-size chunking</div>
+        <div class="pitfall">
+          <div class="pitfall-title">⚠ Ví dụ thực tế</div>
+          <p>Fixed chunk 512 tokens có thể split giữa "Điều 2: Nghĩa vụ bảo mật" và "2.1 Nghĩa vụ của Bên nhận". Khi query "nghĩa vụ bảo mật", chunk trả về không biết đây là Điều 2 hay Điều 5, không thể cite chính xác.</p>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Lợi ích hierarchical</div>
+        <div class="answer-text">
+          <strong>1. Citation chính xác:</strong> Mỗi clause có <code>full_path = "Điều 2 > Mục 2.1 > Điểm a"</code>. Report có thể cite đúng vị trí.<br><br>
+          <strong>2. Semantic search đúng unit:</strong> Search theo nghĩa vụ → query trả về Clause "2.1 Nghĩa vụ bảo mật", không phải chunk bị cắt ngang câu.<br><br>
+          <strong>3. Parent context:</strong> Khi phân tích risk ở Mục 2.1, ta biết nó thuộc Điều 2 (Nghĩa vụ), không phải Điều 4 (Chấm dứt). Context cha ảnh hưởng đến risk assessment.<br><br>
+          <strong>4. Missing clause detection:</strong> Với hierarchical, ta biết "Điều X về tranh chấp" bị thiếu. Với flat chunks, chỉ biết "đoạn text về tranh chấp" không tìm thấy — không granular.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="q-card" id="q13">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q13</span>
+      <span class="q-text">Tại sao dùng instructor thay vì raw function calling? Khi nào instructor fail?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★★☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">So sánh</div>
+        <table class="compare-table">
+          <tr><th>Tính năng</th><th>instructor</th><th>Raw function calling</th></tr>
+          <tr><td>Auto retry khi schema fail</td><td class="tick">✓ max_retries=3</td><td class="cross">✗ Manual</td></tr>
+          <tr><td>Error message → LLM tự sửa</td><td class="tick">✓ Validation error feedback</td><td class="cross">✗ Không có</td></tr>
+          <tr><td>Partial mode</td><td class="tick">✓ Trả partial object</td><td class="cross">✗ Fail toàn bộ</td></tr>
+          <tr><td>Streaming</td><td class="tick">✓ Stream từng field</td><td>Partial</td></tr>
+          <tr><td>Dependency</td><td>Thêm dependency</td><td class="tick">✓ Zero dep</td></tr>
+        </table>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Khi nào instructor fail</div>
+        <div class="pitfall">
+          <div class="pitfall-title">⚠ Giới hạn</div>
+          <p>instructor fail khi LLM không thể satisfy schema sau max_retries lần — ví dụ: yêu cầu extract contract_value từ NDA không có giá trị tiền tệ, LLM cứ hallucinate số. Giải pháp: dùng <code>Optional</code> cho mọi field không guaranteed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="q-card" id="q14">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q14</span>
+      <span class="q-text">Giải thích "Zero Hallucination" constraint trong risk detection. Làm thế nào để enforce nó kỹ thuật?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★★</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Vấn đề</div>
+        <div class="answer-text">
+          LLM rất hay paraphrase — "Bên A không chịu trách nhiệm..." → "Bên A miễn mọi trách nhiệm...". Về nghĩa gần giống, nhưng về pháp lý là khác nhau hoàn toàn. Report pháp lý phải quote nguyên văn.<br><br>
+          <strong>Kỹ thuật enforce:</strong><br>
+          1. Prompt: <em>"RULE: Trường quote PHẢI là copy-paste nguyên văn từ input. TUYỆT ĐỐI không paraphrase."</em><br>
+          2. Few-shot: Mỗi example có quote nguyên văn — LLM học pattern<br>
+          3. Post-processing validation: Sau khi nhận RiskItem, check <code>assert risk.quote in original_clause_text</code><br>
+          4. Nếu fail → re-call LLM với feedback: <em>"Quote này không tìm thấy trong điều khoản gốc. Hãy copy-paste chính xác."</em>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Code enforcement</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">python</span></div>
+          <pre><span class="kw">class</span> <span class="cls">RiskItem</span>(<span class="cls">BaseModel</span>):
+    quote: str
+
+    <span class="kw">@validator</span>(<span class="str">"quote"</span>)
+    <span class="kw">def</span> <span class="fn">validate_quote_verbatim</span>(cls, v, values, **kwargs):
+        <span class="cm"># original_text được pass vào context khi validate</span>
+        original = kwargs.get(<span class="str">"context"</span>, {}).get(<span class="str">"original_text"</span>, <span class="str">""</span>)
+        <span class="kw">if</span> original <span class="kw">and</span> v <span class="kw">not in</span> original:
+            <span class="kw">raise</span> <span class="cls">ValueError</span>(
+                f<span class="str">f"Quote not found verbatim in source. "</span>
+                f<span class="str">f"Received: '{v[:50]}...'"</span>
+            )
+        <span class="kw">return</span> v
+        <span class="cm"># instructor sẽ pass error này cho LLM để tự sửa</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="q-card" id="q15">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q15</span>
+      <span class="q-text">Chain-of-Thought trong few-shot examples khác gì standard few-shot? Khi nào nên dùng?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Phân biệt</div>
+        <div class="answer-text">
+          <strong>Standard few-shot:</strong> Input → Output trực tiếp. LLM học pattern matching.<br>
+          <strong>CoT few-shot:</strong> Input → Thinking (lý luận từng bước) → Output. LLM học cách suy luận, không chỉ output.<br><br>
+          <strong>Khi nào CoT cần thiết:</strong> Khi task đòi hỏi multi-step reasoning — ví dụ: "Điều khoản này có bất lợi cho bên nào? Tại sao?" LLM phải xác định chủ thể, đọc nghĩa pháp lý, xác định risk type, rồi mới kết luận severity.<br><br>
+          <strong>Trong risk detection:</strong> Nếu chỉ dùng standard few-shot, LLM match surface patterns ("không chịu trách nhiệm" → HIGH). Với CoT, LLM học phân biệt "không chịu trách nhiệm về bất khả kháng" (LOW) vs "không chịu trách nhiệm về mọi thiệt hại" (HIGH).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q16 -->
+  <div class="q-card" id="q16">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q16</span>
+      <span class="q-text">Tại sao embedding text-embedding-3-small đủ tốt cho clause matching? Khi nào cần upgrade lên large?</span>
+      <div class="q-badges"><span class="badge badge-easy">EASY</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">So sánh</div>
+        <table class="compare-table">
+          <tr><th></th><th>text-embedding-3-small</th><th>text-embedding-3-large</th></tr>
+          <tr><td>Dimensions</td><td>1536</td><td>3072</td></tr>
+          <tr><td>Cost</td><td>$0.02/1M tokens</td><td>$0.13/1M tokens (6.5×)</td></tr>
+          <tr><td>MTEB Score</td><td>62.3</td><td>64.6 (+2.3)</td></tr>
+          <tr><td>Latency</td><td>~50ms</td><td>~120ms</td></tr>
+        </table>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Decision</div>
+        <div class="answer-text">
+          Clause matching là task tương đối coarse — cần biết "điều khoản A và B có cùng mục đích pháp lý không?", không cần hiểu subtle nuances. +2.3 MTEB score của large không justify 6.5× cost.<br><br>
+          <strong>Upgrade khi:</strong> False negative rate cao (MISSING not detected) dù đã tune threshold, hoặc khi expand sang multi-language contracts phức tạp hơn.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q17 -->
+  <div class="q-card" id="q17">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q17</span>
+      <span class="q-text">Giải thích cách detect "Missing Clause" — đây là bài toán hai chiều, không phải một chiều.</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★★</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Hai chiều query</div>
+        <div class="flow">
+          <div class="flow-step">
+            <span class="flow-num">→</span>
+            <div class="flow-content">
+              <div class="flow-title">Contract → Template (detect MODIFIED)</div>
+              <div class="flow-desc">Mỗi clause trong contract, tìm match gần nhất trong template. Nếu similarity ∈ [0.6, 0.75) → MODIFIED. Phát hiện điều khoản bị thay đổi so với chuẩn.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">←</span>
+            <div class="flow-content">
+              <div class="flow-title">Template → Contract (detect MISSING) ⭐</div>
+              <div class="flow-desc">Mỗi clause REQUIRED trong template, tìm match trong contract. Nếu không tìm thấy (max similarity &lt; 0.75) → MISSING. Đây mới là chiều quan trọng để phát hiện "hợp đồng thiếu điều khoản phạt".</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Tại sao một chiều không đủ</div>
+        <div class="pitfall">
+          <div class="pitfall-title">⚠ Nếu chỉ check một chiều (Contract → Template)</div>
+          <p>Chỉ phát hiện được clauses trong contract có "lạ" không. Không biết template có clauses nào mà contract thiếu. Câu trả lời "F1 ≥ 85% cho missing clause detection" phụ thuộc vào implement đúng cả 2 chiều.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q18 -->
+  <div class="q-card" id="q18">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q18</span>
+      <span class="q-text">Cosine similarity threshold 0.75 được chọn như thế nào? Tại sao không phải 0.8 hay 0.7?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Empirical process</div>
+        <div class="answer-text">
+          0.75 không phải con số magic — phải empirically tune trên labeled dataset. Process:<br><br>
+          1. Tạo test set: 50 cặp (clause, expected_status) đã annotate thủ công<br>
+          2. Sweep threshold từ 0.5 đến 0.95 bằng 0.05 increments<br>
+          3. Tính F1 score cho mỗi threshold<br>
+          4. Chọn threshold maximize F1 trên validation set<br><br>
+          <strong>Kết quả điển hình:</strong> threshold 0.7 → recall cao nhưng precision thấp (PRESENT false positives). 0.8 → precision cao nhưng recall thấp (bỏ sót PRESENT). 0.75 thường là sweet spot cho bilingual legal text.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Key Point</div>
+        <div class="keypoint"><p><strong>Trong CV:</strong> Nêu "tuned similarity threshold via F1 optimization trên 50-sample dataset" — thể hiện engineering rigor, không phải hardcode random number.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ VECTOR DB ══ -->
+<div class="category" id="cat-vector">
+  <div class="category-header">
+    <div class="cat-icon" style="background:rgba(45,212,191,0.1)">🗄</div>
+    <span class="cat-title">Vector DB & Embedding</span>
+    <span class="cat-count">4 câu</span>
+  </div>
+
+  <!-- Q19 -->
+  <div class="q-card" id="q19">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q19</span>
+      <span class="q-text">Tại sao cần 2 Qdrant collections riêng biệt? Design payload schema cho từng collection.</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★★☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">2 Collections</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">json</span></div>
+          <pre><span class="cm">// Collection 1: nda_templates (static, index một lần)</span>
+{
+  <span class="str">"clause_title"</span>: <span class="str">"Định nghĩa thông tin bảo mật"</span>,
+  <span class="str">"clause_type"</span>: <span class="str">"definition"</span>,
+  <span class="str">"criticality"</span>: <span class="str">"REQUIRED"</span>,  <span class="cm">// để filter khi check missing</span>
+  <span class="str">"template_id"</span>: <span class="str">"NDA_VI_v2"</span>,
+  <span class="str">"language"</span>: <span class="str">"vi"</span>
+}
+
+<span class="cm">// Collection 2: contract_clauses (dynamic, mỗi upload)</span>
+{
+  <span class="str">"contract_id"</span>: <span class="str">"uuid-123"</span>,   <span class="cm">// để filter, tránh cross-contamination</span>
+  <span class="str">"clause_id"</span>: <span class="str">"2.1.a"</span>,
+  <span class="str">"full_path"</span>: <span class="str">"Điều 2 > Mục 2.1 > Điểm a"</span>,
+  <span class="str">"level"</span>: <span class="num">3</span>
+}</pre>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Tại sao tách</div>
+        <div class="answer-text">Tách để: (1) Filter REQUIRED clauses khi detect missing — không muốn OPTIONAL clauses raise false MISSING alerts. (2) Xóa contract_clauses dễ dàng khi user delete contract. (3) Query performance — search trong 100 template clauses vs 10,000 contract clauses rất khác nhau.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q20 -->
+  <div class="q-card" id="q20">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q20</span>
+      <span class="q-text">Qdrant HNSW index hoạt động thế nào? Tại sao approximate nearest neighbor tốt hơn exact search?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★☆☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">HNSW Conceptually</div>
+        <div class="answer-text">
+          HNSW (Hierarchical Navigable Small World) là graph-based index. Mỗi vector được kết nối với K nearest neighbors. Search bắt đầu từ entry point (top layer), greedy descent xuống các layer, mỗi bước move đến neighbor gần hơn với query.<br><br>
+          <strong>Tại sao ANN tốt hơn exact:</strong> Exact search (brute force) = O(n × d) với n = số vectors, d = dimensions. 10K vectors × 1536 dims = 15M operations per query. HNSW = O(log n) average, trade off ~1% recall để đổi lấy 100× speedup.<br><br>
+          <strong>Trong use case này:</strong> Template collection chỉ có ~100 clauses — exact search cũng OK. Nhưng khi contract_clauses tích lũy 10K+ clauses qua nhiều users, HNSW trở nên critical.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q21 -->
+  <div class="q-card" id="q21">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q21</span>
+      <span class="q-text">Tại sao không dùng Pinecone hay ChromaDB? Self-hosted Qdrant có risks gì?</span>
+      <div class="q-badges"><span class="badge badge-easy">EASY</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Decision Matrix</div>
+        <table class="compare-table">
+          <tr><th></th><th>Qdrant (self-hosted)</th><th>Pinecone</th><th>ChromaDB</th></tr>
+          <tr><td>Cost (MVP)</td><td class="tick">✓ Free (Docker)</td><td>$70+/month</td><td class="tick">✓ Free</td></tr>
+          <tr><td>Data privacy</td><td class="tick">✓ On-premise</td><td>Cloud only</td><td class="tick">✓ Local</td></tr>
+          <tr><td>Payload filtering</td><td class="tick">✓ Advanced</td><td>Basic</td><td>Basic</td></tr>
+          <tr><td>Production scale</td><td class="tick">✓ Tốt</td><td class="tick">✓ Tốt</td><td>Không tốt</td></tr>
+          <tr><td>Managed service</td><td>No (risk)</td><td class="tick">✓ Yes</td><td>No</td></tr>
+        </table>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Self-hosted Risks</div>
+        <div class="answer-text">
+          <strong>Operational risk:</strong> Cần tự handle backup, upgrade, disk management. Qdrant data corrupt nếu không backup → mất toàn bộ embeddings, phải re-index.<br><br>
+          <strong>Mitigation:</strong> Volume mount với daily backup script, pin Qdrant version trong Docker, health check endpoint. Trong production thực tế: Qdrant Cloud (managed) nếu budget cho phép.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q22 -->
+  <div class="q-card" id="q22">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q22</span>
+      <span class="q-text">Batch embedding vs single embedding — tác động đến latency và cost như thế nào?</span>
+      <div class="q-badges"><span class="badge badge-easy">EASY</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Numbers</div>
+        <div class="metrics-grid">
+          <div class="metric-card"><div class="metric-val">30×</div><div class="metric-label">API calls (sequential)</div></div>
+          <div class="metric-card"><div class="metric-val">1×</div><div class="metric-label">API calls (batch)</div></div>
+          <div class="metric-card"><div class="metric-val">~3s</div><div class="metric-label">Sequential latency</div></div>
+          <div class="metric-card"><div class="metric-val">~0.3s</div><div class="metric-label">Batch latency</div></div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Implementation</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">python</span></div>
+          <pre><span class="cm"># ✓ Batch — 1 API call cho tất cả clauses</span>
+response = openai_client.embeddings.create(
+    input=[c.content <span class="kw">for</span> c <span class="kw">in</span> clauses],
+    model=<span class="str">"text-embedding-3-small"</span>
+)
+embeddings = [e.embedding <span class="kw">for</span> e <span class="kw">in</span> response.data]
+
+<span class="cm"># ✗ Sequential — 30 API calls</span>
+<span class="kw">for</span> clause <span class="kw">in</span> clauses:
+    embedding = openai_client.embeddings.create(input=clause.content, ...)</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ TESTING ══ -->
+<div class="category" id="cat-testing">
+  <div class="category-header">
+    <div class="cat-icon" style="background:rgba(96,165,250,0.1)">🧪</div>
+    <span class="cat-title">Testing & LLM Evaluation</span>
+    <span class="cat-count">5 câu</span>
+  </div>
+
+  <!-- Q23 -->
+  <div class="q-card" id="q23">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q23</span>
+      <span class="q-text">Tại sao unit test LLM-related code phải mock LLM? Không mock thì có vấn đề gì?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★★★</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">3 vấn đề khi không mock</div>
+        <div class="flow">
+          <div class="flow-step">
+            <span class="flow-num">01</span>
+            <div class="flow-content">
+              <div class="flow-title">Flaky tests — non-deterministic output</div>
+              <div class="flow-desc">LLM không trả output giống nhau cho cùng input. Test pass hôm nay, fail ngày mai không vì code thay đổi mà vì LLM variance. Không thể trust CI.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">02</span>
+            <div class="flow-content">
+              <div class="flow-title">Latency — unit test chạy chậm</div>
+              <div class="flow-desc">1 LLM call = 1–3s. 50 unit tests × 2 LLM calls = 100–300s. CI pipeline từ 30s → 5 phút. Dev không chạy test local vì chờ lâu.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">03</span>
+            <div class="flow-content">
+              <div class="flow-title">Cost — tốn tiền API</div>
+              <div class="flow-desc">100 test runs × 50 tests × ~$0.01 = $50/ngày chỉ để chạy test. Với team 5 người, không thể chấp nhận.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Phân tầng đúng</div>
+        <div class="keypoint"><p><strong>Rule:</strong> Unit tests = mock LLM, test business logic. Integration tests = real LLM, test prompt quality. Chạy integration tests trước merge vào main, không phải mỗi commit.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q24 -->
+  <div class="q-card" id="q24">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q24</span>
+      <span class="q-text">DeepEval đo Hallucination Rate như thế nào? Metric này có limitations gì?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Cơ chế DeepEval</div>
+        <div class="answer-text">
+          DeepEval HallucinationMetric dùng một LLM judge (thường là GPT-4) để đánh giá: "Câu nào trong actual_output không được support bởi context (source documents)?". Score = % câu có factual support.<br><br>
+          <strong>Trong project này:</strong> actual_output = report text. context = contract original text. Metric kiểm tra mỗi claim trong report có nguồn gốc từ contract không.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Limitations quan trọng</div>
+        <div class="pitfall">
+          <div class="pitfall-title">⚠ Limitations của metric</div>
+          <p><strong>1. LLM judge cũng có thể hallucinate.</strong> GPT-4 judge đánh giá GPT-4 output — không hoàn toàn objective.<br><br><strong>2. Không detect paraphrasing hallucination.</strong> "không chịu trách nhiệm" → "miễn trách nhiệm" — LLM judge có thể coi là supported vì nghĩa gần giống. Đây là lý do cần thêm substring check thủ công.<br><br><strong>3. Threshold 0.05 là convention,</strong> không phải con số được tính toán cho domain pháp lý cụ thể. Với hợp đồng, nên yêu cầu 0%.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q25 -->
+  <div class="q-card" id="q25">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q25</span>
+      <span class="q-text">Tại sao cần 4 loại test contracts (safe, missing, risky, edge)? Nếu chỉ có 1 loại thì sao?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Mỗi loại test khác nhau</div>
+        <table class="compare-table">
+          <tr><th>Loại</th><th>Test cái gì</th><th>Metric</th></tr>
+          <tr><td>Safe contracts (5)</td><td>False positive rate — agent không được flag rủi ro không có</td><td>FP Rate = 0%</td></tr>
+          <tr><td>Missing clauses (5)</td><td>Recall — phát hiện đủ clauses bị thiếu</td><td>Recall ≥ 85%</td></tr>
+          <tr><td>Risky contracts (5)</td><td>Precision — flag đúng severity</td><td>Precision ≥ 80%</td></tr>
+          <tr><td>Edge cases (5)</td><td>Robustness — không crash hay hallucinate</td><td>No error, graceful degradation</td></tr>
+        </table>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Nếu chỉ có 1 loại</div>
+        <div class="pitfall">
+          <div class="pitfall-title">⚠ Bias trong evaluation</div>
+          <p>Nếu chỉ test risky contracts, model có thể optimize để flag mọi thứ — recall 100% nhưng precision 30%. Không biết vì không test safe contracts. Dataset đa dạng mới reveal toàn bộ failure modes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q26 -->
+  <div class="q-card" id="q26">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q26</span>
+      <span class="q-text">Acceptance criteria "E2E latency < 30s" — bạn measure P50 hay P95? Tại sao quan trọng?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">P50 vs P95</div>
+        <div class="answer-text">
+          <strong>P50 (median):</strong> 50% requests hoàn thành trong thời gian này. Misleading — ẩn tail latency.<br>
+          <strong>P95:</strong> 95% requests hoàn thành. Nếu P95 = 45s, 1/20 user phải chờ > 45s — UX rất tệ.<br><br>
+          <strong>Trong benchmark script:</strong> Luôn report P50, P95, P99 và stddev. Target "< 30s" phải là P95, không phải mean. LLM API latency có high variance — một call có thể 5s, call khác 25s tùy server load.
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Key insight</div>
+        <div class="keypoint"><p><strong>Senior signal:</strong> Biết phân biệt P50/P95/P99 và biết tail latency quan trọng hơn mean thể hiện bạn đã từng deal với production systems, không chỉ development.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q27 -->
+  <div class="q-card" id="q27">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q27</span>
+      <span class="q-text">Làm thế nào để test Human-in-the-loop flow tự động? Không thể ngồi click UI trong CI.</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Programmatic HITL Testing</div>
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">python</span></div>
+          <pre><span class="kw">def</span> <span class="fn">test_hitl_flow_automated</span>(agent_with_test_db):
+    config = {<span class="str">"configurable"</span>: {<span class="str">"thread_id"</span>: <span class="str">"test-hitl-001"</span>}}
+
+    <span class="cm"># Step 1: Run agent đến interrupt</span>
+    result = agent_with_test_db.invoke(
+        <span class="cls">AgentState</span>(contract_id=<span class="str">"test-hitl-001"</span>, file_path=<span class="str">"fixtures/nda_missing_date.pdf"</span>),
+        config=config
+    )
+
+    <span class="cm"># Assert: phải có interrupt, phải hỏi đúng field</span>
+    <span class="kw">assert</span> result[<span class="str">"__interrupt__"</span>] <span class="kw">is not None</span>
+    interrupt_payload = result[<span class="str">"__interrupt__"</span>][<span class="num">0</span>].value
+    <span class="kw">assert</span> <span class="kw">any</span>(q[<span class="str">"field"</span>] == <span class="str">"effective_date"</span> <span class="kw">for</span> q <span class="kw">in</span> interrupt_payload[<span class="str">"questions"</span>])
+
+    <span class="cm"># Step 2: Simulate user answer — programmatically resume</span>
+    from langgraph.types <span class="kw">import</span> Command
+    final_result = agent_with_test_db.invoke(
+        Command(resume={<span class="str">"meta_effective_date"</span>: <span class="str">"2026-06-01"</span>}),
+        config=config
+    )
+
+    <span class="cm"># Assert: pipeline hoàn thành, metadata updated</span>
+    <span class="kw">assert</span> final_result[<span class="str">"report"</span>] <span class="kw">is not None</span>
+    <span class="kw">assert</span> final_result[<span class="str">"metadata"</span>].effective_date == date(<span class="num">2026</span>, <span class="num">6</span>, <span class="num">1</span>)</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ SYSTEM DESIGN ══ -->
+<div class="category" id="cat-system">
+  <div class="category-header">
+    <div class="cat-icon" style="background:rgba(167,139,250,0.1)">⚙</div>
+    <span class="cat-title">System Design & Scalability</span>
+    <span class="cat-count">4 câu</span>
+  </div>
+
+  <!-- Q28 -->
+  <div class="q-card" id="q28">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q28</span>
+      <span class="q-text">Hệ thống scale như thế nào khi có 1000 concurrent users upload hợp đồng cùng lúc?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Bottlenecks và giải pháp</div>
+        <div class="flow">
+          <div class="flow-step">
+            <span class="flow-num">01</span>
+            <div class="flow-content">
+              <div class="flow-title">LLM API rate limits → Queue + backpressure</div>
+              <div class="flow-desc">Anthropic API có rate limits (requests/min, tokens/min). Cần Celery queue với rate limiting — không fire tất cả 1000 LLM calls cùng lúc. Priority queue: trả tiền nhiều hơn → queue priority cao.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">02</span>
+            <div class="flow-content">
+              <div class="flow-title">PostgreSQL connection pool → pgBouncer</div>
+              <div class="flow-desc">1000 concurrent agents × 5 DB queries = 5000 concurrent connections. Postgres default max = 100. pgBouncer pooler ở giữa, reuse connections efficiently.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">03</span>
+            <div class="flow-content">
+              <div class="flow-title">Qdrant → Distributed cluster</div>
+              <div class="flow-desc">Single Qdrant node có throughput limit. Khi scale, dùng Qdrant distributed mode với sharding theo contract_id. Qdrant Cloud handle này tự động.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q29 -->
+  <div class="q-card" id="q29">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q29</span>
+      <span class="q-text">Làm thế nào để ensure data isolation giữa các clients (multi-tenancy)? Hợp đồng của công ty A không được lộ cho công ty B.</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★★★</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">3 lớp bảo vệ</div>
+        <div class="answer-text">
+          <strong>Layer 1 — API (JWT + ownership check):</strong><br>
+          Mỗi request phải có JWT với <code>user_id</code>. Mọi endpoint check: <code>SELECT id FROM contracts WHERE id=$1 AND user_id=$2</code>. Không tìm thấy → 404 (không phải 403, để tránh information leakage).<br><br>
+          <strong>Layer 2 — Database (Row-Level Security):</strong><br>
+          PostgreSQL RLS policy: <code>CREATE POLICY user_isolation ON contracts USING (user_id = current_user_id())</code>. Dù SQL bug không check ownership, RLS tự filter.<br><br>
+          <strong>Layer 3 — Qdrant (payload filter):</strong><br>
+          Mọi query Qdrant bắt buộc filter <code>{"contract_id": request.contract_id}</code>. contract_id được validate thuộc user. Embedding của contract khác không bao giờ return.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q30 -->
+  <div class="q-card" id="q30">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q30</span>
+      <span class="q-text">Cost optimization: Hệ thống tốn bao nhiêu tiền mỗi contract? Làm thế nào để giảm?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Cost breakdown (10-trang NDA)</div>
+        <table class="compare-table">
+          <tr><th>Step</th><th>Tokens (est.)</th><th>Cost</th></tr>
+          <tr><td>NER extraction</td><td>~2K input, 500 output</td><td>~$0.004</td></tr>
+          <tr><td>Risk detection (30 clauses)</td><td>~30K input, 15K output</td><td>~$0.07</td></tr>
+          <tr><td>Report generation</td><td>~5K input, 3K output</td><td>~$0.01</td></tr>
+          <tr><td>Embeddings (30 clauses)</td><td>~3K tokens</td><td>~$0.0001</td></tr>
+          <tr><td><strong>Total</strong></td><td></td><td><strong>~$0.08/contract</strong></td></tr>
+        </table>
+      </div>
+      <div class="q-section">
+        <div class="section-label">Optimization strategies</div>
+        <div class="answer-text">
+          <strong>1. Cache NER results:</strong> Nếu user upload cùng file 2 lần (hash match), return cached result. Saving: 100% cost cho re-upload.<br><br>
+          <strong>2. Haiku cho low-stakes tasks:</strong> Dùng Claude Haiku cho NER (không cần reasoning mạnh), chỉ dùng Sonnet cho risk detection. Haiku = 5× rẻ hơn Sonnet.<br><br>
+          <strong>3. Batch risk detection:</strong> Thay vì 1 LLM call per clause, gom 5 clauses per call. Giảm overhead nhưng cần careful prompt engineering để output vẫn structured.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q31 -->
+  <div class="q-card" id="q31">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q31</span>
+      <span class="q-text">Thiết kế monitoring cho production. Cần alert gì, metric gì, log gì?</span>
+      <div class="q-badges"><span class="badge badge-hard">HARD</span><span class="badge badge-freq">★★★☆☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Monitoring stack</div>
+        <div class="answer-text">
+          <strong>Business metrics (Grafana):</strong><br>
+          — Contracts processed/hour, success rate, avg processing time<br>
+          — HITL interrupt rate (% contracts cần human input) — nếu tăng đột biến → parser có vấn đề<br>
+          — Hallucination rate (track từ DeepEval test runs)<br><br>
+          <strong>System metrics:</strong><br>
+          — LLM API latency P95, error rate (4xx/5xx từ Anthropic API)<br>
+          — Qdrant query latency, vector count per collection<br>
+          — PostgreSQL connection pool utilization<br><br>
+          <strong>Alerts phải có:</strong><br>
+          — LLM API error rate > 5% trong 5 phút → page on-call<br>
+          — Contract stuck PROCESSING > 5 phút → investigate<br>
+          — Disk usage Qdrant > 80% → add storage<br><br>
+          <strong>Structured logging (structlog):</strong>
+        </div>
+      </div>
+      <div class="q-section">
+        <div class="code-block">
+          <div class="code-header"><span class="code-lang">python</span></div>
+          <pre>logger.info(
+    <span class="str">"risk_detected"</span>,
+    contract_id=contract_id,
+    clause_id=clause_id,
+    severity=risk.severity,
+    risk_type=risk.risk_type,
+    llm_latency_ms=latency,
+    model=<span class="str">"claude-3-5-sonnet"</span>
+)
+<span class="cm"># Structured log → dễ query với Loki/CloudWatch</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ BEHAVIORAL ══ -->
+<div class="category" id="cat-behavioral">
+  <div class="category-header">
+    <div class="cat-icon" style="background:rgba(251,191,36,0.1)">💬</div>
+    <span class="cat-title">Behavioral & STAR Format</span>
+    <span class="cat-count">4 câu</span>
+  </div>
+
+  <!-- Q32 -->
+  <div class="q-card" id="q32">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q32</span>
+      <span class="q-text">Describe the project in 2 minutes for a non-technical interviewer (Product Manager, CTO).</span>
+      <div class="q-badges"><span class="badge badge-easy">EASY</span><span class="badge badge-freq">★★★★★</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">STAR Format</div>
+        <div class="star-grid">
+          <div class="star-row">
+            <div class="star-label">S</div>
+            <div class="star-content">SMEs tốn 2–5 triệu đồng thuê luật sư review NDA mỗi lần. Với startup ký 10 NDA/tháng, đây là chi phí đáng kể và bottleneck vì phải chờ luật sư available.</div>
+          </div>
+          <div class="star-row">
+            <div class="star-label">T</div>
+            <div class="star-content">Xây AI Agent tự động phân tích NDA: phát hiện điều khoản rủi ro, điều khoản bị thiếu, và tương tác với user khi cần thêm thông tin.</div>
+          </div>
+          <div class="star-row">
+            <div class="star-label">A</div>
+            <div class="star-content">Implemented hierarchical document parsing để giữ cấu trúc pháp lý, semantic matching để so sánh với template chuẩn, LLM-based risk detection với constraint zero hallucination, và Human-in-the-Loop với LangGraph để agent biết khi nào cần hỏi lại user.</div>
+          </div>
+          <div class="star-row">
+            <div class="star-label">R</div>
+            <div class="star-content">Agent đạt 85%+ F1 cho missing clause detection, hallucinatation rate dưới 5%, và xử lý NDA 10 trang trong dưới 30 giây — so với 2–3 giờ của luật sư. Chi phí ~$0.08 mỗi contract thay vì hàng triệu đồng.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q33 -->
+  <div class="q-card" id="q33">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q33</span>
+      <span class="q-text">Khó khăn kỹ thuật lớn nhất bạn gặp khi build project này và cách giải quyết?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★★★</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Strong Answer Example</div>
+        <div class="answer-text">
+          <strong>Vấn đề:</strong> LLM liên tục paraphrase quotes trong risk items, dù đã viết trong prompt "PHẢI quote nguyên văn". Khoảng 30% quotes bị thay đổi nhẹ — không sai về nghĩa nhưng sai về pháp lý.<br><br>
+          <strong>Giải pháp đầu tiên (sai):</strong> Viết prompt mạnh hơn — "TUYỆT ĐỐI không paraphrase", "You will be penalized". Cải thiện nhẹ nhưng không đủ.<br><br>
+          <strong>Giải pháp đúng:</strong> Thêm Pydantic validator với <code>instructor</code> tự động kiểm tra <code>risk.quote in original_clause_text</code>. Khi fail, instructor pass validation error về cho LLM với message: "Quote not found verbatim. Copy-paste exactly from input." LLM tự sửa trong retry. Kết quả: 0% paraphrased quotes sau 3 iterations.<br><br>
+          <strong>Lesson learned:</strong> Đừng chỉ dựa vào prompt để enforce constraints. Nếu constraint có thể kiểm tra bằng code, kiểm tra bằng code — prompt chỉ là hint.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q34 -->
+  <div class="q-card" id="q34">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q34</span>
+      <span class="q-text">Nếu có thêm 2 tuần, bạn sẽ improve gì? Và tại sao KHÔNG làm ngay bây giờ?</span>
+      <div class="q-badges"><span class="badge badge-easy">EASY</span><span class="badge badge-freq">★★★★☆</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">Honest prioritization</div>
+        <div class="answer-text">
+          <strong>Sẽ làm:</strong><br>
+          1. <em>Multi-contract type support</em> (Service Agreement, Employment Contract) — hiện chỉ có NDA. Cần thêm template set và tune prompt cho mỗi loại.<br>
+          2. <em>Audit trail</em> — lưu history mỗi lần agent ra quyết định, cho phép user "explain this risk" → traceability quan trọng cho pháp lý.<br>
+          3. <em>User feedback loop</em> — user có thể mark risk là false positive. Data này improve threshold và prompt cho version sau.<br><br>
+          <strong>Tại sao chưa làm:</strong> MVP principle — validate idea với NDA trước khi invest vào multi-contract. Nếu users không dùng NDA feature, multi-contract cũng không ai dùng. Audit trail và feedback loop là production-ready features, không phải MVP requirements.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q35 -->
+  <div class="q-card" id="q35">
+    <div class="q-header" onclick="toggle(this)">
+      <span class="q-num">Q35</span>
+      <span class="q-text">Tại sao project này thể hiện bạn là Senior Engineer, không phải Junior?</span>
+      <div class="q-badges"><span class="badge badge-med">MEDIUM</span><span class="badge badge-freq">★★★★★</span></div>
+      <span class="q-chevron">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="q-section">
+        <div class="section-label">6 Senior signals</div>
+        <div class="flow">
+          <div class="flow-step">
+            <span class="flow-num">01</span>
+            <div class="flow-content">
+              <div class="flow-title">Scope decision — NDA only</div>
+              <div class="flow-desc">Junior: build generic "hỗ trợ mọi hợp đồng". Senior: giới hạn scope MVP, deliver quality thay vì breadth. "Narrow and deep beats wide and shallow."</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">02</span>
+            <div class="flow-content">
+              <div class="flow-title">Trade-off awareness</div>
+              <div class="flow-desc">Biết giới hạn của mọi technical decision: BackgroundTasks vs Celery, small vs large embedding, polling vs WebSocket — và có thể giải thích khi nào cần upgrade.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">03</span>
+            <div class="flow-content">
+              <div class="flow-title">Failure mode thinking</div>
+              <div class="flow-desc">Thiết kế crash recovery (LangGraph checkpoint), timeout handling (HITL 24h), error isolation (risk detection không crash cả pipeline) từ đầu, không phải sau khi bug xảy ra.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">04</span>
+            <div class="flow-content">
+              <div class="flow-title">Testing rigor</div>
+              <div class="flow-desc">Không chỉ "nó chạy được". Có acceptance criteria đo được, LLM eval metrics, fixture dataset phân loại rõ ràng, CI pipeline với test tiers.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">05</span>
+            <div class="flow-content">
+              <div class="flow-title">Domain-specific constraints</div>
+              <div class="flow-desc">Zero-hallucination, verbatim quote, legal citation format — không phải requirements điển hình của chatbot. Hiểu domain pháp lý đủ để thiết kế constraints đúng.</div>
+            </div>
+          </div>
+          <div class="flow-step">
+            <span class="flow-num">06</span>
+            <div class="flow-content">
+              <div class="flow-title">Code quality</div>
+              <div class="flow-desc">Pydantic validators, idempotent nodes, structured logging, dataclass với default_factory — không phải "make it work", mà "make it maintainable".</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .main -->
+
+<script>
+function toggle(header) {
+  const card = header.parentElement;
+  const wasOpen = card.classList.contains('open');
+  card.classList.toggle('open', !wasOpen);
+  updateCounter();
+}
+
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function updateCounter() {
+  const open = document.querySelectorAll('.q-card.open').length;
+  const total = document.querySelectorAll('.q-card').length;
+  document.getElementById('counter').textContent = `${open} / ${total}`;
+}
+
+// Copy code
+document.querySelectorAll('.code-copy').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const pre = btn.closest('.code-block').querySelector('pre');
+    navigator.clipboard.writeText(pre.textContent);
+    btn.textContent = 'copied!';
+    setTimeout(() => btn.textContent = 'copy', 1500);
+  });
+});
+
+// Highlight active nav on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      const pills = document.querySelectorAll('.nav-pill');
+      pills.forEach(p => p.classList.remove('active'));
+      const map = {
+        'cat-architecture': 0, 'cat-langgraph': 1, 'cat-nlp': 2,
+        'cat-vector': 3, 'cat-testing': 4, 'cat-system': 5, 'cat-behavioral': 6
+      };
+      if (map[id] !== undefined && pills[map[id]]) {
+        pills[map[id]].classList.add('active');
+      }
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+
+document.querySelectorAll('.category').forEach(el => observer.observe(el));
+updateCounter();
+</script>
+
+</body>
+</html>
